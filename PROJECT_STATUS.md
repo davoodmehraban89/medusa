@@ -128,3 +128,10 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Arabic (`ar`, RTL) is now a **required third language** alongside Persian (`fa-IR`, RTL) and English (`en`, LTR).
 - Updated `commerce/src/config/markets.ts` and `commerce/src/main.tsx` with Arabic locale, language switch and translated initial storefront UI. Language choice does not automatically change the market/currency selection.
 - **Verification pending:** dependencies/build and browser RTL/LTR testing have not yet been run; complete translation coverage of product data, checkout and transactional messages is not yet implemented.
+
+## Catalog integration and isolated CI added (2026-10-13)
+- Added `commerce/src/api/catalog.ts`: fetches Medusa Store API regions, resolves the selected country to an enabled region, requests public product summaries with `region_id` and publishable key, validates API responses and exposes typed errors.
+- Connected `commerce/src/main.tsx` to the catalog fetcher with abortable requests, loading/error/empty states and responsive product cards. Product prices and checkout remain intentionally disabled until validated region pricing and cart flows exist.
+- Added Vitest test source for all five market region mappings, invalid responses, missing publishable keys and locale/currency utilities; added `commerce/.gitignore` and Vite type declarations.
+- Added `.github/workflows/commerce-checks.yml` for Node 22 isolated `commerce/` npm test/build on PR and feature branch pushes. **CI run status has not been checked; no passing tests/build are claimed.**
+- Engineering follow-up: check Actions run output, fix any TS/build/test issues, configure actual Medusa backend regions and publishable key, validate Store API/CORS, then implement product details and cart.
