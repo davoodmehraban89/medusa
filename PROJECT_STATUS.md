@@ -123,3 +123,8 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Implemented a responsive, static storefront landing view with five-market selection, currency labels, and Persian RTL / English LTR UI switching. The view explicitly states that catalog and checkout are inactive.
 - Updated `commerce/README.md` with standalone npm preview commands. These commands have **not been run or tested** in this environment; no backend connectivity or successful build is claimed.
 - Next gate: dependency installation and TypeScript build in CI or an authorized runtime; connect a real Medusa backend instance, region APIs and publishable key, then add product listings and integration tests.
+
+## Arabic language approved and initial UI implemented (2026-10-13)
+- Arabic (`ar`, RTL) is now a **required third language** alongside Persian (`fa-IR`, RTL) and English (`en`, LTR).
+- Updated `commerce/src/config/markets.ts` and `commerce/src/main.tsx` with Arabic locale, language switch and translated initial storefront UI. Language choice does not automatically change the market/currency selection.
+- **Verification pending:** dependencies/build and browser RTL/LTR testing have not yet been run; complete translation coverage of product data, checkout and transactional messages is not yet implemented.
