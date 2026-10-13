@@ -117,3 +117,9 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Created `commerce/src/config/markets.ts` with typed country/currency/locale definitions, product-origin policy type and explicit rial-to-toman helper. Commit `f217a8a`.
 - These are **source/configuration scaffolding only**. No storefront runtime, package install, automated test, database, payment or deployment has been verified.
 - Next technical gate: establish executable storefront package and test harness; verify Node 22/Yarn 3.2.1 setup and Medusa backend instance on an authorized runner.
+
+## Storefront source implementation (2026-10-13)
+- Created a standalone React/TypeScript/Vite scaffold in `commerce/`: `package.json`, `index.html`, `tsconfig.json`, `vite.config.ts`, `.env.example`, `src/main.tsx`, `src/styles.css`.
+- Implemented a responsive, static storefront landing view with five-market selection, currency labels, and Persian RTL / English LTR UI switching. The view explicitly states that catalog and checkout are inactive.
+- Updated `commerce/README.md` with standalone npm preview commands. These commands have **not been run or tested** in this environment; no backend connectivity or successful build is claimed.
+- Next gate: dependency installation and TypeScript build in CI or an authorized runtime; connect a real Medusa backend instance, region APIs and publishable key, then add product listings and integration tests.
