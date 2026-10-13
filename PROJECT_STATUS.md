@@ -57,5 +57,17 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Architecture:** Medusa backend + Admin, separate responsive storefront, PostgreSQL, required infrastructure/services selected during setup. Keep provider integrations modular.
 - **Initial acceptance:** local/staging environment starts reliably; one test product completes an end-to-end order using sandbox/test payment; inventory/order state updates correctly; basic responsive and accessibility checks pass; secrets are excluded from Git.
 - **Out of scope until requested:** multi-vendor marketplace, multi-tenant store-builder, mobile native apps, AI agents, complex ERP integration.
-- **Unresolved business decisions:** target country/currency, product category, payment provider, shipping provider, brand and domain. These affect localization and live launch but do not block the technical foundation.
+- **Unresolved business decisions:** exact launch countries, product category, payment providers, shipping providers, brand and domain. These affect localization and live launch but do not block the technical foundation.
 - **Progress statement:** product direction confirmed; no working storefront or passing end-to-end test has yet been demonstrated.
+
+## Confirmed market scope — Iran + international (2026-10-13)
+- The store must serve **Iranian and international markets** through a single modular commerce platform; country-specific payment/shipping availability must be verified before launch.
+- **Localization:** Persian (fa-IR) with RTL layout and English (en) with LTR layout; language choice should be explicit, persisted and testable. Prepare translation keys rather than hard-coded interface strings.
+- **Regions/currencies:** define Medusa sales regions and supported currencies explicitly. Iran display can use toman while backend monetary units must be normalized and documented (IRR/rial vs toman conversion). International prices must use configured currencies; do not imply live FX conversion without an FX provider.
+- **Payments:** separate payment-provider configuration by region. Use sandbox/test flows first. Iranian gateways and international PSPs require their own eligibility, legal/compliance and account checks; never assume a provider can process both.
+- **Shipping/taxes:** region-based shipping methods, address validation, tax rules and customs responsibilities must be configurable; do not hard-code country rules.
+- **Catalog:** shared products with market-specific pricing, availability and publication where appropriate; test cross-region cart and checkout restrictions.
+- **Security:** no production payment credentials in Git; validate webhook signatures, restrict administrative access and handle personal data by applicable jurisdiction.
+- **Acceptance criteria:** demonstrate fa-IR/RTL and en/LTR pages, IR region test checkout and one international region test checkout, correct price unit and shipping choices, and region isolation in orders. A successful test is not proof of live PSP eligibility.
+- **Open decisions:** which international countries first, initial product category, whether prices are managed independently or through an FX feed, preferred providers, hosting jurisdiction and domain.
+- **Status:** requirements recorded; localization, providers, UI and end-to-end tests **not yet implemented or verified**.
