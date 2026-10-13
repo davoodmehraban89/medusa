@@ -1,0 +1,71 @@
+name: Review Medusa upstream updates
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: medusa-upstream-review
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Fetch upstream source (no upstream code execution)
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --single-branch --branch develop \
+            https://github.com/medusajs/medusa.git /tmp/medusa-upstream
+          echo "UPSTREAM_SHA=$(git -C /tmp/medusa-upstream rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Prepare review branch with source changes
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B automation/medusa-upstream-review
+          # Keep local GitHub configuration and workflows intact. These are
+          # security-sensitive and require separate manual review.
+          rsync -a --delete \
+            --exclude='/.git/' \
+            --exclude='/.github/' \
+            /tmp/medusa-upstream/ ./
+          mkdir -p .github
+          printf '%s\n' "$UPSTREAM_SHA" > .github/medusa-upstream-reviewed-sha
+          git add -A
+          if git diff --cached --quiet; then
+            echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
+          else
+            git commit -m "Review Medusa upstream develop at $UPSTREAM_SHA"
+            git push --force-with-lease origin HEAD:refs/heads/automation/medusa-upstream-review
+            echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Open or update review pull request
+        if: env.HAS_CHANGES == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh pr list --head automation/medusa-upstream-review --base main --state open --json number --jq '.[0].number' | grep -q '[0-9]'; then
+            echo "Existing review PR updated."
+          else
+            gh pr create \
+              --base main \
+              --head automation/medusa-upstream-review \
+              --title "Review upstream Medusa develop updates" \
+              --body "Source: https://github.com/medusajs/medusa (develop). This PR is for human review only. No automatic merge. The .github directory (including upstream workflows) is intentionally excluded. Inspect changes, especially deletions and local customizations, before merging."
+          fi
