@@ -79,3 +79,14 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Region-level payment, tax, shipping, customs, address formats, product restrictions and merchant eligibility require country-specific validation. No live gateway or shipping provider has been selected or integrated.
 - Test acceptance: selectable shipping country for all five markets, correct configured price currency and unit, available shipping/payment options by country, and test checkout per configured region. Do not imply live payment availability.
 - Product category and seller's country/legal entity remain open decisions that affect payment eligibility, export and tax rules.
+
+## Fulfillment and inventory model confirmed (2026-10-13)
+- **Multi-country stock locations**, with **Iran as the primary dispatch and replenishment origin**. Other warehouses may hold local inventory in UAE, Oman, Iraq and/or Qatar as operations expand; their exact locations are not yet confirmed.
+- Use Medusa stock locations, inventory levels, sales channels, fulfillment sets and shipping options rather than one global stock count. Inventory availability must be resolved per sales region/address and eligible fulfillment location.
+- Phase-one fulfillment routing policy: prioritize an eligible in-country warehouse with available stock; otherwise consider Iran-origin cross-border shipment only where carrier, export/import restrictions, duties and customer disclosure permit. Do not promise automatic cross-border shipping without verified carriers and compliance.
+- Prevent overselling: reserve stock at checkout, handle cancellation/refund/release, split shipments only where operationally supported, and define backorder policy explicitly.
+- Maintain per-location inventory and shipment tracking, with an admin-visible audit trail of transfers, stock adjustments and fulfillment decisions.
+- Pricing, payments, customs, sanctions/export controls and import taxes require jurisdiction-specific legal/provider verification before live operation; software design alone does not establish permission to ship or accept payments.
+- **Acceptance scenarios:** (1) Iran-origin domestic order; (2) local-country stock order; (3) no local stock with eligible Iran-origin route; (4) no legal/available route produces a clear unavailable-shipping message; (5) stock reservation and cancellation restore correct location-level quantity.
+- **Outstanding operational inputs:** actual warehouse countries/addresses, SKU/product category, cross-border shipping partners, merchant legal entities, Incoterms/duties responsibility, returns address and service levels.
+- **Implementation status:** architecture requirement recorded; no warehouse configuration, inventory routing, or fulfillment tests have yet been run.
