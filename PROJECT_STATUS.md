@@ -111,3 +111,9 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Partner onboarding safeguards:** independently verify legal entity, beneficial ownership, merchant-of-record role, payment processor authorization, bank/settlement ownership, contract, refunds/chargebacks, data protection, taxes and export/import/sanctions restrictions. A friend's residency/company does not automatically authorize use of their merchant account or enable cross-border transactions.
 - **Hard gate:** no live payment routing through another person's account, false merchant representation, or production activation without formal authorization and provider acceptance.
 - **Status:** business constraint recorded; no external company, contract, bank account, PSP onboarding or production processing has been verified.
+
+## Technical implementation start (2026-10-13)
+- Created `commerce/README.md` with dedicated application boundary, five-market delivery plan and local prerequisite commands. Commit `984866f`.
+- Created `commerce/src/config/markets.ts` with typed country/currency/locale definitions, product-origin policy type and explicit rial-to-toman helper. Commit `f217a8a`.
+- These are **source/configuration scaffolding only**. No storefront runtime, package install, automated test, database, payment or deployment has been verified.
+- Next technical gate: establish executable storefront package and test harness; verify Node 22/Yarn 3.2.1 setup and Medusa backend instance on an authorized runner.
