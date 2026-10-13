@@ -90,3 +90,15 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Acceptance scenarios:** (1) Iran-origin domestic order; (2) local-country stock order; (3) no local stock with eligible Iran-origin route; (4) no legal/available route produces a clear unavailable-shipping message; (5) stock reservation and cancellation restore correct location-level quantity.
 - **Outstanding operational inputs:** actual warehouse countries/addresses, SKU/product category, cross-border shipping partners, merchant legal entities, Incoterms/duties responsibility, returns address and service levels.
 - **Implementation status:** architecture requirement recorded; no warehouse configuration, inventory routing, or fulfillment tests have yet been run.
+
+## Catalog and merchandising strategy confirmed (2026-10-13)
+- **Mixed-category retail catalog** rather than a single vertical.
+- **Iran market:** electronics are the primary commercial focus; allow other product categories.
+- **UAE, Oman, Iraq and Qatar:** primary focus on products originating from Iran; allow other compliant categories as the business evolves.
+- Treat **country of origin** (e.g. Iran) as structured product/variant metadata, distinct from warehouse location, seller jurisdiction and shipping origin. Never infer origin merely from the warehouse country.
+- Support country/region-specific assortment, publication, prices, stock, restrictions, tax and fulfillment eligibility; a product may be sellable in Iran but not in every export market.
+- Electronics requirements to evaluate: serial/IMEI where applicable, warranty jurisdiction, voltage/plug compatibility, battery/dangerous-goods restrictions, authenticity and returns/RMA.
+- Export-product requirements to evaluate: origin labeling, HS/customs classification, packaging/expiry/storage for applicable categories, import permissions, country-specific product restrictions and duty/tax disclosure.
+- **Acceptance:** electronics product listed and test-purchased in Iran; Iran-origin product listed and test-purchased in at least one eligible foreign test region; unsupported cross-border product cannot be checked out; inventory is reserved at correct stock location.
+- **Not yet known:** precise SKUs/categories for exports, brands, regulated items, seller legal entity, carriers, actual warehouse locations, product compliance documentation.
+- **Status:** requirements documented only; no category rules, listings, shipping routes or checkouts implemented or verified.
