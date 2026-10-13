@@ -24,9 +24,10 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from zipfile import ZipFile
-          import shutil
+          import shutil, json, base64
           root=Path.cwd().resolve()
           with ZipFile('/tmp/medusa-develop.zip') as z:
+              workflows = {}
               files=[i for i in z.infolist() if not i.is_dir()]
               assert len(files)==24261, f'Unexpected file count: {len(files)}'
               assert z.testzip() is None
@@ -35,18 +36,21 @@ jobs:
                   assert path.parts[0]=='medusa-develop' and len(path.parts)>1
                   relative=Path(*path.parts[1:])
                   assert not relative.is_absolute() and '..' not in relative.parts
+                  if relative.parts[:2] == ('.github', 'workflows'):
+                      workflows[str(relative)] = base64.b64encode(z.read(info)).decode('ascii')
+                      continue
                   dest=(root/relative).resolve()
                   assert dest.is_relative_to(root)
                   dest.parent.mkdir(parents=True,exist_ok=True)
                   with z.open(info) as src, dest.open('wb') as dst:
                       shutil.copyfileobj(src,dst)
-          print('Extracted',len(files),'files')
+          (root/'medusa-workflows-import.json').write_text(json.dumps(workflows),encoding='utf-8')
+          print('Prepared',len(files),'files including',len(workflows),'workflow files')
           PY
-      - name: Commit imported source and remove temporary workflow
+      - name: Commit source files and stage workflow import data
         run: |
-          rm .github/workflows/import-medusa-source.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add -f -A
           git commit -m "Import original Medusa source archive without modifications"
           git push origin HEAD:main
