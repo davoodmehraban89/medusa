@@ -52,3 +52,20 @@ The root repository is a large upstream source monorepo. Installation may requir
 - Staging hosting, domain, secrets and backup policy
 
 See `PROJECT_STATUS.md` for the verified project record.
+
+## Storefront preview — new source files
+
+The initial React/TypeScript/Vite storefront scaffold now lives in `commerce/`.
+
+To run this **standalone preview** (requires Node.js 22 and npm; commands have not been verified in CI):
+
+```bash
+cd commerce
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Open http://localhost:5173. The storefront displays the five configured countries, market currencies and Persian/English RTL/LTR switching. It **does not yet fetch live products or process orders**. The Medusa publishable key must be configured once a backend instance is running. Avoid committing `.env` or live secrets.
+
+For the upstream monorepo, continue to use its pinned Yarn version. The standalone storefront uses npm until a workspace integration strategy is validated.
