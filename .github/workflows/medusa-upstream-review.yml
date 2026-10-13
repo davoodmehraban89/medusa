@@ -1,6 +1,9 @@
 name: Review Medusa upstream updates
 
 on:
+  push:
+    paths:
+      - '.github/workflows/medusa-upstream-review.yml'
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
