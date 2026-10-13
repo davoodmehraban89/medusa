@@ -3,7 +3,7 @@
 > Updated: 2026-10-13. Evidence-based status only. This is a development baseline, **not** a claim of production readiness.
 
 ## Mission
-Turn the imported Medusa open-source commerce monorepo into a verified, runnable foundation for a future tailored commerce product. Preserve upstream compatibility while keeping local changes reviewed.
+Turn the imported Medusa open-source commerce monorepo into a verified, runnable foundation for a professional single-merchant online store (MVP), with a modular architecture for future growth. Preserve upstream compatibility while keeping local changes reviewed.
 
 ## Current verified state
 - Repository: `davoodmehraban89/medusa`; default branch: `main`.
@@ -17,7 +17,7 @@ Turn the imported Medusa open-source commerce monorepo into a verified, runnable
 ## Five workstreams (functional responsibilities, not claims of autonomous agents)
 | Workstream | Owner responsibility | Immediate deliverable | Acceptance criteria | State |
 | --- | --- | --- | --- | --- |
-| 1. Product | Scope and target customer/use case | MVP requirements and explicit exclusions | Owner accepts MVP and success metrics | Awaiting product choice |
+| 1. Product | Scope and target customer/use case | MVP requirements and explicit exclusions | Owner accepts MVP and success metrics | Product direction confirmed; MVP details pending |
 | 2. Architecture & DevOps | Runtime and reproducible setup | Versioned environment specification and dev setup | Clean environment starts Backend + Admin | Not started |
 | 3. Application & UX | Storefront/Admin integration | Minimal purchase journey design and working UI | Browse → cart → checkout in test environment | Not started |
 | 4. QA & Security | Tests, dependency/secrets review | CI baseline, smoke tests, threat/risk register | Repeatable passing checks; no leaked secrets | Not started |
@@ -29,7 +29,7 @@ The project coordinator integrates these workstreams, reviews dependencies and b
 - **G0 — Source custody:** imported to GitHub; **done** (does not include runtime verification).
 - **G1 — Reproducible development:** Node/Yarn versions pinned, dependencies install, Backend/Admin boot; **pending**.
 - **G2 — Commerce smoke test:** product, inventory, cart, checkout using test provider; **pending**.
-- **G3 — Target-market MVP:** selected use case, storefront, payment/shipping integrations, localization if needed; **pending requirements**.
+- **G3 — Target-market MVP:** selected use case, storefront, payment/shipping integrations, localization if needed; **scope selected: professional single-merchant store; detailed requirements pending**.
 - **G4 — Staging release:** CI, security checks, backups, monitoring, rollback; **pending**.
 - **G5 — Production readiness:** business sign-off and production acceptance; **pending**.
 
@@ -39,7 +39,7 @@ Do **not** assign an overall completion percentage until the MVP scope and gate 
 1. Review upstream PR #1, especially mode-only changes and any deletions. **Do not merge blindly.**
 2. Fix upstream sync permissions: repository Settings → Actions → General → Workflow permissions → enable `Allow GitHub Actions to create and approve pull requests` **only after approval**; alternatively use an approved GitHub App/PAT with minimum required permissions. Re-test PR creation.
 3. Establish a reproducible environment and run install/build/test checks on a safe branch; record exact logs and versions.
-4. Confirm business target: standard online shop, multi-vendor marketplace, or another commerce model. This choice changes MVP scope and effort.
+4. Business target confirmed: **professional online store**, initially single merchant. Define catalog, checkout, payment and shipping requirements; do not add marketplace or store-builder capabilities without a new decision.
 5. Develop on feature branches, review via PR, and update this file with evidence and blockers after each completed milestone.
 
 ## Change log
@@ -49,3 +49,13 @@ Do **not** assign an overall completion percentage until the MVP scope and gate 
 
 ## Next check-in format
 Record date, commit/PR, objective, tests run with results, unresolved blockers, owner, and next acceptance gate. Never mark an item done on code presence alone.
+
+## Confirmed product direction (2026-10-13)
+- **Target:** professional online store, initially a single merchant (not multi-vendor marketplace or SaaS store-builder).
+- **MVP customer journey:** browse/search products → view variants and stock → add to cart → enter customer/address details → select shipping and payment → place order → receive confirmation → track order status.
+- **MVP admin journey:** create/edit products and variants; maintain prices and inventory; manage orders, fulfillment and customers; configure basic promotions.
+- **Architecture:** Medusa backend + Admin, separate responsive storefront, PostgreSQL, required infrastructure/services selected during setup. Keep provider integrations modular.
+- **Initial acceptance:** local/staging environment starts reliably; one test product completes an end-to-end order using sandbox/test payment; inventory/order state updates correctly; basic responsive and accessibility checks pass; secrets are excluded from Git.
+- **Out of scope until requested:** multi-vendor marketplace, multi-tenant store-builder, mobile native apps, AI agents, complex ERP integration.
+- **Unresolved business decisions:** target country/currency, product category, payment provider, shipping provider, brand and domain. These affect localization and live launch but do not block the technical foundation.
+- **Progress statement:** product direction confirmed; no working storefront or passing end-to-end test has yet been demonstrated.
