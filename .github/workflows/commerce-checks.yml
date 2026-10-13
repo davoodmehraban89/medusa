@@ -1,0 +1,35 @@
+name: Commerce storefront checks
+
+on:
+  pull_request:
+    paths:
+      - "commerce/**"
+      - ".github/workflows/commerce-checks.yml"
+  push:
+    branches:
+      - "project/medusa-foundation-audit"
+    paths:
+      - "commerce/**"
+      - ".github/workflows/commerce-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  storefront:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: commerce
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install standalone storefront dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run unit tests
+        run: npm test
+      - name: Typecheck and build
+        run: npm run build
