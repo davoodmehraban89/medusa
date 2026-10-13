@@ -102,3 +102,12 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Acceptance:** electronics product listed and test-purchased in Iran; Iran-origin product listed and test-purchased in at least one eligible foreign test region; unsupported cross-border product cannot be checked out; inventory is reserved at correct stock location.
 - **Not yet known:** precise SKUs/categories for exports, brands, regulated items, seller legal entity, carriers, actual warehouse locations, product compliance documentation.
 - **Status:** requirements documented only; no category rules, listings, shipping routes or checkouts implemented or verified.
+
+## Merchant legal structure and partner strategy (2026-10-13)
+- **Current:** No registered company or legal entity outside Iran.
+- **Future:** Establish an overseas entity when commercially justified; may collaborate with friends who have companies/residency in target markets, subject to verified written agreements and provider approvals.
+- **Architecture decision:** Design payment, merchant-of-record, tax, settlement and fulfillment settings as country/partner-specific configurations, not assumptions that one Iran-based entity can legally process all five markets.
+- **Release phases:** (1) build/test multilingual multi-region storefront with sandbox payments and simulated shipping; (2) launch only markets where an authorized seller, PSP, shipping and tax arrangements are verified; (3) add partner-based or owned foreign entities after onboarding/compliance checks.
+- **Partner onboarding safeguards:** independently verify legal entity, beneficial ownership, merchant-of-record role, payment processor authorization, bank/settlement ownership, contract, refunds/chargebacks, data protection, taxes and export/import/sanctions restrictions. A friend's residency/company does not automatically authorize use of their merchant account or enable cross-border transactions.
+- **Hard gate:** no live payment routing through another person's account, false merchant representation, or production activation without formal authorization and provider acceptance.
+- **Status:** business constraint recorded; no external company, contract, bank account, PSP onboarding or production processing has been verified.
