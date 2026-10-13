@@ -71,3 +71,11 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Acceptance criteria:** demonstrate fa-IR/RTL and en/LTR pages, IR region test checkout and one international region test checkout, correct price unit and shipping choices, and region isolation in orders. A successful test is not proof of live PSP eligibility.
 - **Open decisions:** which international countries first, initial product category, whether prices are managed independently or through an FX feed, preferred providers, hosting jurisdiction and domain.
 - **Status:** requirements recorded; localization, providers, UI and end-to-end tests **not yet implemented or verified**.
+
+## International launch markets confirmed (2026-10-13)
+- Iran (IR), United Arab Emirates (AE), Oman (OM), Iraq (IQ), and Qatar (QA) are the initial target countries. No other international countries are in phase one.
+- Candidate local currencies: IRR (rial; toman as explicitly labeled presentation only), AED, OMR, IQD, QAR. Store currency units and minor-unit rounding must be verified per provider and Medusa configuration before implementation; do not assume all currencies have two decimals.
+- Persian and English storefront locales are required; Arabic is a recommended additional locale for AE/OM/IQ/QA but not yet approved as a release requirement.
+- Region-level payment, tax, shipping, customs, address formats, product restrictions and merchant eligibility require country-specific validation. No live gateway or shipping provider has been selected or integrated.
+- Test acceptance: selectable shipping country for all five markets, correct configured price currency and unit, available shipping/payment options by country, and test checkout per configured region. Do not imply live payment availability.
+- Product category and seller's country/legal entity remain open decisions that affect payment eligibility, export and tax rules.
