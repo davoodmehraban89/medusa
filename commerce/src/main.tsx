@@ -1,11 +1,14 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { MARKETS, LOCALES, type MarketCode, type StoreLocale } from "./config/markets"
+import { fetchCatalog, type CatalogProduct } from "./api/catalog"
 import "./styles.css"
 
 function App() {
   const [market, setMarket] = React.useState<MarketCode>("IR")
   const [locale, setLocale] = React.useState<StoreLocale>("fa-IR")
+  const [products, setProducts] = React.useState<CatalogProduct[]>([])
+  const [catalogState, setCatalogState] = React.useState<"unconfigured" | "loading" | "ready" | "error">("unconfigured")
   const isFa = locale === "fa-IR"
   const isAr = locale === "ar"
   const tr = (fa: string, en: string, ar: string) => isFa ? fa : isAr ? ar : en
@@ -13,6 +16,22 @@ function App() {
     ? { IR: "ایران", AE: "امارات", OM: "عمان", IQ: "عراق", QA: "قطر" }
     : isAr ? { IR: "إيران", AE: "الإمارات", OM: "عُمان", IQ: "العراق", QA: "قطر" }
     : { IR: "Iran", AE: "UAE", OM: "Oman", IQ: "Iraq", QA: "Qatar" }
+  React.useEffect(() => {
+    const backendUrl = import.meta.env.VITE_MEDUSA_BACKEND_URL
+    const publishableKey = import.meta.env.VITE_MEDUSA_PUBLISHABLE_KEY
+    if (!backendUrl || !publishableKey) {
+      setProducts([])
+      setCatalogState("unconfigured")
+      return
+    }
+    const controller = new AbortController()
+    setCatalogState("loading")
+    setProducts([])
+    fetchCatalog(market, { backendUrl, publishableKey, signal: controller.signal })
+      .then((items) => { if (!controller.signal.aborted) { setProducts(items); setCatalogState("ready") } })
+      .catch(() => { if (!controller.signal.aborted) setCatalogState("error") })
+    return () => controller.abort()
+  }, [market])
   return (
     <main dir={LOCALES[locale].direction} lang={LOCALES[locale].language}>
       <header className="header">
@@ -34,8 +53,12 @@ function App() {
       </section>
       <section className="content" aria-labelledby="catalog-title">
         <h2 id="catalog-title">{tr("محصولات فروشگاه", "Store products", "منتجات المتجر")}</h2>
-        <p>{tr("کاتالوگ پس از اتصال و تأیید API فروشگاه نمایش داده می‌شود.", "The catalog will appear after the store API is connected and verified.", "سيظهر كتالوج المنتجات بعد ربط واجهة المتجر البرمجية والتحقق منها.")}</p>
-        <p className="notice">{tr("این نسخه پیش‌نمایش رابط است؛ خرید و پرداخت هنوز فعال نیست.", "This is a UI preview; checkout and payments are not active.", "هذه معاينة للواجهة؛ الشراء والدفع غير متاحين بعد.")}</p>
+        {catalogState === "unconfigured" && <p>{tr("برای نمایش محصولات، اتصال API فروشگاه را تنظیم کنید.", "Configure the store API to display products.", "يرجى إعداد اتصال واجهة المتجر لعرض المنتجات.")}</p>}
+        {catalogState === "loading" && <p role="status">{tr("در حال دریافت محصولات…", "Loading products…", "جارٍ تحميل المنتجات…")}</p>}
+        {catalogState === "error" && <p role="alert">{tr("دریافت محصولات ناموفق بود. اتصال Backend و کلید عمومی را بررسی کنید.", "Could not load products. Check backend connectivity and publishable key.", "تعذر تحميل المنتجات. تحقق من اتصال الخادم والمفتاح العام.")}</p>}
+        {catalogState === "ready" && products.length === 0 && <p>{tr("در حال حاضر محصولی برای نمایش وجود ندارد.", "No products available to display.", "لا توجد منتجات متاحة للعرض.")}</p>}
+        {catalogState === "ready" && products.length > 0 && <div className="product-grid">{products.map((product) => <article className="product" key={product.id}>{product.thumbnail && <img loading="lazy" src={product.thumbnail} alt="" />}<h3>{product.title}</h3></article>)}</div>}
+        <p className="notice">{tr("این نسخه پیش‌نمایش است؛ قیمت‌گذاری منطقه‌ای، خرید و پرداخت هنوز فعال نیست.", "This is a preview; regional pricing, checkout and payments are not active.", "هذه معاينة؛ الأسعار الإقليمية والشراء والدفع غير متاحة بعد.")}</p>
       </section>
       <footer>© Medusa Commerce · {tr("نسخه توسعه", "Development preview", "نسخة تجريبية")}</footer>
     </main>
