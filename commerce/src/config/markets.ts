@@ -8,10 +8,11 @@ export const MARKETS = {
 } as const
 
 export type MarketCode = keyof typeof MARKETS
-export type StoreLocale = "fa-IR" | "en"
+export type StoreLocale = "fa-IR" | "ar" | "en"
 
 export const LOCALES = {
   "fa-IR": { language: "fa", direction: "rtl" },
+  ar: { language: "ar", direction: "rtl" },
   en: { language: "en", direction: "ltr" },
 } as const
 
