@@ -17,7 +17,7 @@ jobs:
       - name: Download exact source ZIP
         run: |
           python -m pip install --quiet gdown
-          gdown --id 1s21CvVWexMKfHp3qU0SNc0GDTi0_BnuI --output /tmp/medusa-develop.zip
+          gdown 1s21CvVWexMKfHp3qU0SNc0GDTi0_BnuI --output /tmp/medusa-develop.zip
           test "$(stat -c%s /tmp/medusa-develop.zip)" = 61017629
       - name: Extract source without rewriting files
         run: |
