@@ -41,3 +41,22 @@ updates:
       security-updates:
         applies-to: security-updates
         patterns: ["*"]
+
+  # Standalone commerce storefront is being developed in a separate feature PR.
+  # This starts monitoring once commerce/package.json reaches the default branch.
+  # Unlike the imported upstream monorepo, allow safe routine version-update PRs.
+  - package-ecosystem: "npm"
+    directory: "/commerce"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels: ["dependencies"]
+    groups:
+      storefront-minor-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+      storefront-security:
+        applies-to: security-updates
+        patterns: ["*"]
