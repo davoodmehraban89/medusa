@@ -152,3 +152,13 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **GitHub Actions run 38628330763 passed**: `test-cli-with-database` job completed successfully, including its temporary PostgreSQL-backed Medusa CLI environment test. Link: https://github.com/davoodmehraban89/medusa/actions/runs/38628330763
 - This is evidence of the CLI smoke-test environment, not a fully provisioned permanent Backend/Admin, payment integration or storefront end-to-end checkout.
 - Latest security checks and all monorepo test shards still require separate verification; do not mark project gates G1/G2 fully complete solely from this CI result.
+
+## Public static UI preview deployed — 2026-10-14
+
+- **Verified publication:** Cloudflare Pages project `medusa-commerce-preview-dm` under the connected owner account; canonical public URL: https://medusa-commerce-preview-dm.pages.dev/
+- **Deployment evidence:** Cloudflare deployment ID `374bf5c7-5fb0-4250-9b95-de0a21e2c55b` from branch `project/medusa-foundation-audit` commit `03dce387497285950298c8ce277d5ee0140bf761`. Cloudflare API reports `latest_stage=deploy`, `status=success`; build log shows Vite production build and three static files uploaded successfully.
+- **Production Build settings:** root directory `commerce`, build command `npm install --no-audit --no-fund && npm run build`, publish directory `dist`, `NODE_VERSION=22`, `SKIP_DEPENDENCY_INSTALL=1` to bypass the upstream monorepo Yarn install. Automatic deployment follows pushes to the store development branch only, not `main`.
+- **Public preview scope:** three language choices (Persian RTL, Arabic RTL, English LTR), five country choices and currency labels, responsive UI. No backend API key, live product catalog, customer accounts, checkout, payment, production stock or user data.
+- **Hosting constraint handled:** attempted creating a Render static site, but Render returned HTTP 402 requesting billing information. No Render service was created or billing details submitted. An initial GitHub Pages workflow failed before its steps ran; it was removed from the development branch to avoid conflicting deployment methods. The working deployment is Cloudflare Pages.
+- **Security:** This is a public static demonstration, not approval for production commerce or a completed security audit. Static hosting has no production secrets configured; app API keys remain unset.
+- **GitHub state:** `main` was not altered; PR #2 stays open and unmerged. The status above was verified using Cloudflare project and deployment APIs, not inferred from a hypothetical URL.
