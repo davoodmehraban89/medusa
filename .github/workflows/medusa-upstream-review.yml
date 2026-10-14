@@ -21,9 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Check out this repository
+      - name: Check out default branch for upstream comparison
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
           persist-credentials: true
 
@@ -39,7 +40,8 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B automation/medusa-upstream-review
+          # Always branch from main, never from a feature-branch push event.
+          git checkout -B automation/medusa-upstream-review origin/main
           # Keep local GitHub settings and all owner-specific customizations intact.
           # These exclusions prevent upstream --delete from removing storefront,
           # project tracking, secret-scan policy, or owner-owned security scripts.
