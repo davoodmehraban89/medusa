@@ -61,7 +61,15 @@ jobs:
             echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
           else
             git commit -m "Review Medusa upstream develop at $UPSTREAM_SHA"
-            git push --force-with-lease origin HEAD:refs/heads/automation/medusa-upstream-review
+            # Checkout of main does not fetch the automation branch. Obtain
+            # the exact remote SHA and use an explicit optimistic-concurrency
+            # lease; an unrelated concurrent update must NOT be overwritten.
+            REMOTE_SHA=$(git ls-remote --heads origin refs/heads/automation/medusa-upstream-review | awk '{print $1}')
+            if [[ -n "$REMOTE_SHA" ]]; then
+              git push --force-with-lease=refs/heads/automation/medusa-upstream-review:"$REMOTE_SHA" origin HEAD:refs/heads/automation/medusa-upstream-review
+            else
+              git push origin HEAD:refs/heads/automation/medusa-upstream-review
+            fi
             echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
           fi
 
