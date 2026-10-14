@@ -46,3 +46,23 @@ No credentials, production PSP integration, overseas corporate account, producti
 ## PR verification log
 
 To be filled with exact Action run IDs, job conclusions and subsequent fixes after opening this PR. Do **not** check a box without evidence.
+
+## Imported-source secret scan triage — 2026-10-14
+
+The initial full-history scan (run `38620994921`) reported 21 candidate detections. A second redacted JSON scan (run `38622586334`) and a metadata/context-only review (run `38623671048`) identified the source locations **without printing any secret values**.
+
+All 21 detections are associated with the one original source import commit `88005da4ce292f8d1f42726147de44f94100e34d`; there were no detections in the first, passing incoming-change scans. Categories:
+
+| Reviewed category | Number | Evidence and disposition |
+| --- | ---: | --- |
+| Automated test fixtures | 8 | Intentional malformed JWT, RFC-style TOTP test vector, and six idempotency-key test values in notification module integration tests |
+| Documentation/UI examples | 8 | Curl authorization snippets, public-key documentation examples, and demo snippets; the PEM source example contains an ellipsis placeholder rather than a complete usable private key |
+| Generated documentation index | 3 | `www/apps/book/public/llms-full.txt` repeats documentation examples, including a PEM placeholder and curl snippets; metadata-only CI context flags confirm example/placeholder context |
+| Bundled package-manager runtime | 1 | `.yarn/releases/yarn-3.2.1.cjs` bundled vendor code, not a project-specific secret assignment |
+| Historical Base64 workflow import | 1 | `medusa-workflows-import.json` exists only in the original historical commit, and its 45 Base64 entries are upstream workflow YAML. Decoded inspection found 40 references to GitHub `secrets.` variables, no recognized literal GitHub PAT, Stripe live key, AWS key ID, or PEM private-key blocks; one decoded workflow matched the checked-in workflow source |
+
+**Disposition:** These 21 occurrences are treated as inherited examples/test artifacts, not verified usable project credentials. `.gitleaksignore` records only their exact original-commit `Fingerprint` values. It does not disable detector rules, skip entire directories, suppress a current/future commit, or assert that all history is inherently safe. New occurrences should still fail CI.
+
+**Important limitations:** Automated pattern detection and contextual review cannot prove no secret has ever been exposed or is still valid. If any sample value is known to have been used as a live credential, its owner must revoke/rotate it immediately and investigate access logs. No external account access or rotation was performed in this PR.
+
+**Required recheck:** A successful post-allowlist full-history scan and diff scan must be verified against the latest commit. If alerts remain, DO NOT broaden the allowlist to hide them. All scan outputs remain confined to Actions logs; no raw credentials were posted as PR comments or artifacts.
