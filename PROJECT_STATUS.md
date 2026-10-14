@@ -146,3 +146,9 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - The standalone commerce storefront's existing CI run **38457109616 passed** (Node 22 dependency installation, unit tests, TypeScript build). This does **not** establish a running Medusa backend, checkout, or production readiness.
 - Unresolved requirements before release: verify GitHub Dependabot Alerts/Security Updates, private vulnerability intake, review CodeQL alert inventory in Security tab, configure confirmed backend + database + real market integrations, test end-to-end orders.
 - IMPORTANT: Neither security PR #3 nor storefront PR #2 nor upstream PR #1 is merged. Do not merge `main` without explicit approval.
+
+### Verified Medusa CLI environment test (2026-10-14)
+- Imported CLI workflow was failing at executable-bit permission errors from ZIP import. The proposed fork CI fix in PR #3 invokes test scripts via `bash` rather than relying on missing execute bits.
+- **GitHub Actions run 38628330763 passed**: `test-cli-with-database` job completed successfully, including its temporary PostgreSQL-backed Medusa CLI environment test. Link: https://github.com/davoodmehraban89/medusa/actions/runs/38628330763
+- This is evidence of the CLI smoke-test environment, not a fully provisioned permanent Backend/Admin, payment integration or storefront end-to-end checkout.
+- Latest security checks and all monorepo test shards still require separate verification; do not mark project gates G1/G2 fully complete solely from this CI result.
