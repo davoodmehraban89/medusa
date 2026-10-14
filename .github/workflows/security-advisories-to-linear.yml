@@ -21,6 +21,8 @@ concurrency:
 
 jobs:
   sync:
+    # Upstream-only Linear/App integration; skip safely in this independent fork.
+    if: github.repository == 'medusajs/medusa'
     name: Sync advisories to Linear triage
     runs-on: ubuntu-latest
     steps:
