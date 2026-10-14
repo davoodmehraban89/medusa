@@ -66,7 +66,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:5173. The storefront displays the five configured countries, market currencies and Persian/Arabic/English RTL/LTR switching. It **does not yet fetch live products or process orders**. The Medusa publishable key must be configured once a backend instance is running. Avoid committing `.env` or live secrets.
+Open http://localhost:5173. The storefront displays the five configured markets and currencies with independent Persian/Arabic/English RTL/LTR controls. When no Medusa backend is configured, it shows an explicitly labeled **illustrative sample catalogue** with working search, category filters and sample detail views. Sample cards are not real stock, purchasable offers or price quotations. When a real backend and publishable key are configured, it requests Medusa Store API products by matching region. It **does not process orders, payments or live pricing**. Never commit `.env` or live secrets.
 
 For the upstream monorepo, continue to use its pinned Yarn version. The standalone storefront uses npm until a workspace integration strategy is validated.
 
@@ -82,3 +82,13 @@ The **static development UI preview** is configured in Cloudflare Pages on the `
 - **No live API key, payment gateway, customer data, checkout, or production inventory is configured.** The catalog displays an unconfigured state until a real Medusa backend and publishable key are provisioned.
 
 The preview must not be represented as an operating store. A public static UI deployment does not establish any commerce or security production acceptance.
+
+### How to check the interactive preview
+
+- Cloudflare deployment: https://medusa-commerce-preview-dm.pages.dev/
+- Switch between Persian, Arabic and English; layout direction changes automatically.
+- Change country: Iran shows sample electronics plus Iran-origin collections; the UAE, Oman, Iraq and Qatar show examples of Iran-origin collections only. All examples are illustrative, not inventory offers.
+- Search and category filters operate on the examples. Open a sample card for its detail overlay; use Escape or the close button to dismiss it.
+- Until backend credentials are configured, no legitimate add-to-cart, checkout, customer registration, stock verification or payment is available. The preview explicitly signals that fact.
+- Every pull-request change to `commerce/` is checked by GitHub Actions using `npm test` and `npm run build`; Cloudflare Pages builds the development branch for its public static preview without changing `main`.
+- If the site does not open for a visitor, first compare the canonical URL with the latest successful deployment URL in Cloudflare Pages and collect the exact browser error, network (Wi-Fi/mobile data) and country. A successful Cloudflare deployment alone does not guarantee reachability from every network.
