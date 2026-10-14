@@ -162,3 +162,13 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - **Hosting constraint handled:** attempted creating a Render static site, but Render returned HTTP 402 requesting billing information. No Render service was created or billing details submitted. An initial GitHub Pages workflow failed before its steps ran; it was removed from the development branch to avoid conflicting deployment methods. The working deployment is Cloudflare Pages.
 - **Security:** This is a public static demonstration, not approval for production commerce or a completed security audit. Static hosting has no production secrets configured; app API keys remain unset.
 - **GitHub state:** `main` was not altered; PR #2 stays open and unmerged. The status above was verified using Cloudflare project and deployment APIs, not inferred from a hypothetical URL.
+
+## Public storefront preview repair (2026-10-15)
+
+- User reported the preview did not work. Initial review confirmed that Cloudflare hosted an older static build, but its catalogue showed only the missing-Backend configuration notice. Independent JavaScript-rendered public fetch did load the URL; this is not proof of availability on the user's own network.
+- Added a clearly labeled, illustrative, non-transactional multilingual sample catalogue (commerce/src/preview/products.ts), accessible search/filter interactions, sample detail dialog, responsive layout and region/locale controls in commerce/src/main.tsx and commerce/src/styles.css. No made-up prices, inventory, customer data or active checkout.
+- Added tests (commerce/src/preview/products.test.ts) for five target markets, three languages and no invented prices or stock. GitHub Actions Commerce storefront checks completed successfully at code head eee6bf06 (run 38644302381).
+- Cloudflare Pages project: medusa-commerce-preview-dm. Cloudflare deployment 7041e365-fdd4-4ab8-aec3-c43a11e94662 on commit eee6bf06 was confirmed deploy/success. Public URL: https://medusa-commerce-preview-dm.pages.dev/
+- Independent JavaScript-rendered fetch on the canonical URL confirmed 8 sample category cards, 5 country options, 3 language options and explicit preview-only notice.
+- Network-specific availability on the user's phone is NOT validated. If site still fails on that network, collect screenshot/error and test Wi-Fi vs cellular and VPN/DNS; do not infer ISP-specific causes without evidence.
+- PR #2 is still unmerged. No configured production backend, real SKUs, customer accounts, payment or actual orders. This is strictly a UI demonstration.
