@@ -49,8 +49,9 @@ jobs:
   check:
     name: Check if latest release is running
     if: |
-      github.event_name == 'release' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.version != 'latest')
+      github.repository == 'medusajs/medusa' &&
+      (github.event_name == 'release' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.version != 'latest'))
     runs-on: ubuntu-latest
     outputs:
       release_running: ${{ steps.check_release.outputs.release_running }}
@@ -79,7 +80,7 @@ jobs:
   release:
     name: Trigger ${{ github.event.inputs.version || 'preview' }} Release
     needs: check
-    if: needs.check.outputs.release_running != 'true'
+    if: github.repository == 'medusajs/medusa' && needs.check.outputs.release_running != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -181,8 +182,9 @@ jobs:
   latest:
     name: Version packages PR
     if: |
-      github.event_name == 'push' ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.version == 'latest')
+      github.repository == 'medusajs/medusa' &&
+      (github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.version == 'latest'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -234,6 +236,7 @@ jobs:
   snapshot:
     name: Dispatch Snapshot Release
     if: |
+      github.repository == 'medusajs/medusa' &&
       github.event.issue.pull_request &&
       github.event.comment.body == '/snapshot-this'
     runs-on: ubuntu-latest

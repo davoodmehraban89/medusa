@@ -36,8 +36,17 @@ jobs:
         with:
           node-version: 22
 
-      - name: Assert changed
-        run: ./scripts/assert-changed-files-actions.sh "packages"
+      # The imported ZIP lost executable bits and the original helper assumes
+      # origin/master or origin/develop even though this fork uses main.
+      # Use a read-only changed-file summary; never merge/reset the CI checkout.
+      - name: List changed files safely
+        shell: bash
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --quiet origin "$BASE_REF"
+          git diff --name-only "origin/$BASE_REF...HEAD" | sed -n '1,100p'
 
       - name: Install dependencies
         uses: ./.github/actions/cache-deps

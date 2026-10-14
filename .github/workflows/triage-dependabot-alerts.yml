@@ -19,6 +19,9 @@ permissions:
 
 jobs:
   triage:
+    # Imported upstream bot requires Medusa organization credentials and can dismiss
+    # alerts. Do not execute privileged triage in an independently owned fork.
+    if: github.repository == 'medusajs/medusa'
     name: Triage published-package alerts
     runs-on: ubuntu-latest
     steps:
