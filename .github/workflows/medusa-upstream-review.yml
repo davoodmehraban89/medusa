@@ -40,11 +40,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B automation/medusa-upstream-review
-          # Keep local GitHub configuration and workflows intact. These are
-          # security-sensitive and require separate manual review.
+          # Keep local GitHub settings and all owner-specific customizations intact.
+          # These exclusions prevent upstream --delete from removing storefront,
+          # project tracking, secret-scan policy, or owner-owned security scripts.
           rsync -a --delete \
             --exclude='/.git/' \
             --exclude='/.github/' \
+            --exclude='/commerce/' \
+            --exclude='/PROJECT_STATUS.md' \
+            --exclude='/.gitleaksignore' \
+            --exclude='/scripts/security/' \
             /tmp/medusa-upstream/ ./
           mkdir -p .github
           printf '%s\n' "$UPSTREAM_SHA" > .github/medusa-upstream-reviewed-sha
