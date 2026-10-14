@@ -1,7 +1,8 @@
 # .github/dependabot.yml
-# Security-updates ONLY. `open-pull-requests-limit: 0` disables routine version
+# Root/docs: security-updates ONLY. `open-pull-requests-limit: 0` disables routine version
 # bumps; alert-driven security PRs still flow (they ignore this limit) and are
-# grouped into a single PR per ecosystem. Requires "Dependabot security updates"
+# grouped into a single PR per ecosystem. Actions also allow two reviewed routine
+# update PRs. Requires "Dependabot security updates"
 # enabled in Settings. This file does NOT change which alerts are raised —
 # alert noise is handled by auto-triage rules + the triage script.
 version: 2
@@ -31,32 +32,22 @@ updates:
         applies-to: security-updates
         patterns: ["*"]
 
+  # Keep GitHub Action versions reviewed and current on this fork.
+  # This permits at most two routine PRs; no auto-merging is configured.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 2
     labels: ["dependencies"]
     groups:
       security-updates:
         applies-to: security-updates
         patterns: ["*"]
-
-  # Standalone commerce storefront is being developed in a separate feature PR.
-  # This starts monitoring once commerce/package.json reaches the default branch.
-  # Unlike the imported upstream monorepo, allow safe routine version-update PRs.
-  - package-ecosystem: "npm"
-    directory: "/commerce"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 5
-    labels: ["dependencies"]
-    groups:
-      storefront-minor-patch:
+      routine-action-updates:
         applies-to: version-updates
         patterns: ["*"]
-        update-types: ["minor", "patch"]
-      storefront-security:
-        applies-to: security-updates
-        patterns: ["*"]
+
+# The standalone /commerce package exists only in unmerged PR #2. A Dependabot
+# entry for /commerce must be added *after* that directory reaches main;
+# configuring it now would point Dependabot at a nonexistent default-branch path.
