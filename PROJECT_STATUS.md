@@ -135,3 +135,14 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Added Vitest test source for all five market region mappings, invalid responses, missing publishable keys and locale/currency utilities; added `commerce/.gitignore` and Vite type declarations.
 - Added `.github/workflows/commerce-checks.yml` for Node 22 isolated `commerce/` npm test/build on PR and feature branch pushes. **CI run status has not been checked; no passing tests/build are claimed.**
 - Engineering follow-up: check Actions run output, fix any TS/build/test issues, configure actual Medusa backend regions and publishable key, validate Store API/CORS, then implement product details and cart.
+
+## Security and fork CI workstream — verified update 2026-10-14
+
+- Security workstream implemented in a separate **Draft, unmerged** PR #3: https://github.com/davoodmehraban89/medusa/pull/3. Its source branch is `security/codeql-dependabot-gitleaks`; **not on `main`**.
+- Added candidate controls: CodeQL for JS/TS and GitHub Actions, Gitleaks on incoming commits and reachable history, Dependabot actions update policy, owner-specific vulnerability reporting document, and safeguards for upstream-only automation / source synchronization.
+- Initial 21 candidate Gitleaks detections were sourced to the imported Medusa snapshot and reviewed as sample/test/docs/vendor cases. Only their original-commit fingerprints were allowlisted; no product/provider credential was proven compromised, and no live account was accessed or rotated.
+- Evidence: Gitleaks history + diff **run 38624077121 passed**; CodeQL JS/TS + Actions **run 38624077199 passed**; upstream-review **run 38628696228 passed**. These runs are not necessarily the latest PR head; final verification must inspect the latest checks.
+- Imported Medusa monorepo CI previously failed because ZIP import stripped executable bits on shell scripts. Targeted shell-invocation and non-mutating diff fixes are included in PR #3; the complete Backend/Admin test and checkout still require independently passing verification.
+- The standalone commerce storefront's existing CI run **38457109616 passed** (Node 22 dependency installation, unit tests, TypeScript build). This does **not** establish a running Medusa backend, checkout, or production readiness.
+- Unresolved requirements before release: verify GitHub Dependabot Alerts/Security Updates, private vulnerability intake, review CodeQL alert inventory in Security tab, configure confirmed backend + database + real market integrations, test end-to-end orders.
+- IMPORTANT: Neither security PR #3 nor storefront PR #2 nor upstream PR #1 is merged. Do not merge `main` without explicit approval.
