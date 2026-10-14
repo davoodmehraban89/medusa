@@ -12,7 +12,7 @@ This folder is the planned application workspace for the **single-merchant, five
 | Iraq | IQ | IQD | Iran-origin products |
 | Qatar | QA | QAR | Iran-origin products |
 
-Persian (`fa-IR`, RTL) and English (`en`, LTR) are confirmed. Arabic remains a proposed enhancement, not an approved release requirement.
+Persian (`fa-IR`, RTL), Arabic (`ar`, RTL), and English (`en`, LTR) are confirmed requirements. Country/market selection is independent of the selected language.
 
 ## Architectural boundaries
 
@@ -66,6 +66,19 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:5173. The storefront displays the five configured countries, market currencies and Persian/English RTL/LTR switching. It **does not yet fetch live products or process orders**. The Medusa publishable key must be configured once a backend instance is running. Avoid committing `.env` or live secrets.
+Open http://localhost:5173. The storefront displays the five configured countries, market currencies and Persian/Arabic/English RTL/LTR switching. It **does not yet fetch live products or process orders**. The Medusa publishable key must be configured once a backend instance is running. Avoid committing `.env` or live secrets.
 
 For the upstream monorepo, continue to use its pinned Yarn version. The standalone storefront uses npm until a workspace integration strategy is validated.
+
+## Public UI preview — Cloudflare Pages
+
+The **static development UI preview** is configured in Cloudflare Pages on the `project/medusa-foundation-audit` branch, independent of `main`:
+
+- Preview project: `medusa-commerce-preview-dm`
+- Public URL (available only once a Cloudflare build completes): `https://medusa-commerce-preview-dm.pages.dev/`
+- Build root: `commerce`; build: `npm install --no-audit --no-fund && npm run build`; published directory: `dist`.
+- Three languages: Persian (RTL), Arabic (RTL), and English (LTR).
+- Country selection: Iran, UAE, Oman, Iraq, Qatar. Prices shown only as currency labels, not real sale prices.
+- **No live API key, payment gateway, customer data, checkout, or production inventory is configured.** The catalog displays an unconfigured state until a real Medusa backend and publishable key are provisioned.
+
+The preview must not be represented as an operating store. A public static UI deployment does not establish any commerce or security production acceptance.
