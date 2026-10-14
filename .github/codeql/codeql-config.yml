@@ -1,0 +1,25 @@
+name: Medusa-owned application and source security
+
+# Include backend/framework code and local storefront while avoiding generated
+# documentation and integration fixture trees. A scan does not replace testing.
+paths:
+  - "packages/**"
+  - "scripts/**"
+  - "commerce/**"
+
+paths-ignore:
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.next/**"
+  - "**/coverage/**"
+  - "**/fixtures/**"
+  - "**/__fixtures__/**"
+  - "**/__snapshots__/**"
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.ts"
+  - "**/*.spec.tsx"
+
+queries:
+  - uses: security-extended
