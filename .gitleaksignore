@@ -1,0 +1,32 @@
+# Reviewed inherited fixture/documentation findings — 2026-10-14
+# These EXACT finding fingerprints came from the original upstream-source
+# import commit, not new storefront/application credentials.
+# Evidence: tests (malformed JWT, TOTP vector, mock idempotency keys);
+# product/docs examples (placeholder PEM/curl/API-key snippets);
+# generated copies/bundles (llms-full.txt, Yarn runtime);
+# and a now-deleted Base64-encoded import of upstream GitHub workflow YAML.
+# Future commits, new locations, and any other secret values are NOT allowlisted.
+# Do not broaden to path regexes or rule-wide exclusions.
+# Triage record: .github/SECURITY_BASELINE.md
+
+88005da4ce292f8d1f42726147de44f94100e34d:.yarn/releases/yarn-3.2.1.cjs:generic-api-key:127
+88005da4ce292f8d1f42726147de44f94100e34d:integration-tests/http/__tests__/invite/admin/invite.spec.ts:jwt:110
+88005da4ce292f8d1f42726147de44f94100e34d:medusa-workflows-import.json:generic-api-key:1
+88005da4ce292f8d1f42726147de44f94100e34d:packages/design-system/ui/src/components/code-block/code-block.stories.tsx:curl-auth-header:23
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/auth/src/utils/__tests__/totp.spec.ts:generic-api-key:4
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:223
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:231
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:239
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:261
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:266
+88005da4ce292f8d1f42726147de44f94100e34d:packages/modules/notification/integration-tests/__tests__/notification-module-service/index.spec.ts:generic-api-key:271
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/book/app/learn/configurations/medusa-config/asymmetric-encryption/page.mdx:curl-auth-header:499
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/book/app/learn/configurations/medusa-config/asymmetric-encryption/page.mdx:private-key:180
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/book/public/llms-full.txt:curl-auth-header:152743
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/book/public/llms-full.txt:curl-auth-header:1828
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/book/public/llms-full.txt:private-key:1513
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/cloud/app/search/_md-content.mdx:curl-auth-header:403
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/cloud/app/search/page.mdx:curl-auth-header:254
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/cloud/app/search/page.mdx:generic-api-key:255
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/resources/app/troubleshooting/_sections/storefront/pak.mdx:curl-auth-header:23
+88005da4ce292f8d1f42726147de44f94100e34d:www/apps/ui/specs/examples/code-block-demo.tsx:curl-auth-header:7
