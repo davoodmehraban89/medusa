@@ -66,3 +66,28 @@ All 21 detections are associated with the one original source import commit `880
 **Important limitations:** Automated pattern detection and contextual review cannot prove no secret has ever been exposed or is still valid. If any sample value is known to have been used as a live credential, its owner must revoke/rotate it immediately and investigate access logs. No external account access or rotation was performed in this PR.
 
 **Required recheck:** A successful post-allowlist full-history scan and diff scan must be verified against the latest commit. If alerts remain, DO NOT broaden the allowlist to hide them. All scan outputs remain confined to Actions logs; no raw credentials were posted as PR comments or artifacts.
+
+## Fork-isolation and CI corrections (2026-10-14)
+
+- **Dependabot default-branch correctness:** removed the premature `/commerce` ecosystem from this PR because that folder only exists in unmerged PR #2. Preserve root/docs security-only policy; allow at most two *review-only* routine GitHub Actions update PRs. After the commerce app reaches `main`, introduce its own npm ecosystem entry and commit a package lockfile.
+- **Upstream-only automation quarantined on this fork:** organization-specific automatic Dependabot alert dismissal + remediation, security-advisory syncing to Linear, upstream npm publishing/snapshot release, Medusa staging dispatch, and privileged PR-review bots now require `github.repository == 'medusajs/medusa'`. No owner tokens are added or copied.
+- **Source sync integrity:** `medusa-upstream-review.yml` always checks out `main`, never bases comparison on a feature-branch push. Owner-specific `commerce/`, `PROJECT_STATUS.md`, `SECURITY.md`, `.gitleaksignore`, and `scripts/security/` are protected from deletion by `rsync --delete`. The review branch update uses the remote SHA in an explicit force-with-lease; this avoids unsafe overwrites and resolved the previously observed stale-info push failure. Actual upstream review run **38628696228** passed and PR #1 remains Draft; no source file deletions were present in the inspected diff.
+- **Imported CI executable bits:** ZIP-based source import lost executable bits. The Medusa setup workflow now uses a non-mutating `git diff` listing rather than running a non-executable script which also assumed `origin/master`. CLI server smoke-test scripts are invoked via `bash`; composite inputs are forwarded using environment variables instead of interpolated shell expressions. Success of the full CLI/backend smoke test remains an independent acceptance gate.
+- **Fork reporting policy:** root `SECURITY.md` now avoids misdirecting fork-specific reports to upstream. GitHub private vulnerability reporting must be verified or a secure private intake method set up before production.
+
+### Actions verification evidence
+
+- Historical source candidate triage: 21 reviewable inherited sample/fixture/vendor detections, all originating in the imported source commit; exact fingerprint exceptions documented in `.gitleaksignore`.
+- `Security / Secret scanning` run **38624077121**: passed on both incoming changes and full reachable Git history (56 commits, ~273 MB, zero unignored detections).
+- `Security / CodeQL` run **38624077199**: both JS/TS and Actions analyses completed successfully.
+- `Review Medusa upstream updates` run **38628696228**: passed after the checkout and lease fixes. This run updates a **review proposal**, not `main`.
+- Final acceptance of **later commits requires checking their own run IDs**; a previous successful run must not be substituted for an unverified latest-head result.
+- CodeQL analysis success means the tool executed; it does **not** confirm a clean alert inventory. The connector cannot retrieve the Code Scanning alert admin API. Owner must review the findings in GitHub's `Security` tab.
+- Other imported Medusa source monorepo test jobs are not evidence of a working custom commerce backend. Storefront PR #2 remains unmerged.
+
+### Explicit no-merge and production gates
+
+- Keep PR #3 **Draft**, do not merge without subsequent explicit owner approval.
+- Confirm Dependabot Alerts / security updates settings and GitHub private vulnerability reporting in the repository admin UI.
+- Check latest security runs and review actual security alerts; resolve remaining failures with evidence.
+- No live credentials, production payment account, merchant-of-record setup, or production deployment has been established.
