@@ -23,7 +23,7 @@ jobs:
   # `pr_number` set it emits that single PR; otherwise it collects all open
   # non-draft PRs for the matrix below.
   get-open-prs:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.repository == 'medusajs/medusa' && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
@@ -63,7 +63,7 @@ jobs:
   # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
   review-all:
     needs: get-open-prs
-    if: needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
+    if: github.repository == 'medusajs/medusa' && needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
     strategy:
       matrix:
         pr: ${{ fromJson(needs.get-open-prs.outputs.matrix) }}
@@ -82,12 +82,13 @@ jobs:
   # Runs on pull_request_target and issue_comment (@medusajs-bot review) events: determines PR number
   prepare:
     if: |
-      (github.event_name == 'pull_request_target' &&
+      github.repository == 'medusajs/medusa' &&
+      ((github.event_name == 'pull_request_target' &&
        github.event.pull_request.draft == false &&
        github.event.pull_request.user.login != 'github-actions[bot]') ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request.url != '' &&
-       contains(github.event.comment.body, '@medusajs-bot review'))
+       contains(github.event.comment.body, '@medusajs-bot review')))
     runs-on: ubuntu-latest
     outputs:
       pr_number: ${{ steps.set.outputs.pr_number }}
@@ -147,7 +148,7 @@ jobs:
   # Runs on pull_request_target and issue_comment: calls the reusable review workflow
   review:
     needs: prepare
-    if: needs.prepare.result == 'success' && needs.prepare.outputs.should_review == 'true'
+    if: github.repository == 'medusajs/medusa' && needs.prepare.result == 'success' && needs.prepare.outputs.should_review == 'true'
     uses: ./.github/workflows/review-pr-action.yml
     with:
       pr_number: ${{ needs.prepare.outputs.pr_number }}
