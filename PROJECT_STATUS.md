@@ -203,3 +203,17 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Independently inspected all three repository HTML files: expected `lang` and `dir`, five radio inputs, three locale links, 24 sample-card instances across all five market panels, **zero external asset elements**.
 - **Deployment NOT YET VERIFIED:** The user must change GitHub Settings → Pages → Build and deployment → Source: `Deploy from a branch`; Branch: `project/medusa-foundation-audit`; Folder: `/docs`; press Save. This changes site publishing source only and leaves `main` unmerged. The expected URL after GitHub Pages has finished is `https://davoodmehraban89.github.io/medusa/` but this URL MUST be verified after the user updates settings; do not claim it is live now.
 - Vercel account SMS verification is unavailable for the user's +98 country code. Cloudflare Pages and Workers rendered successfully from external networks but appeared blank to the user on iPhone; the previously supplied offline HTML works. GitHub Pages is being used as a distinct delivery domain for troubleshooting, not yet proven reachable on user's network.
+
+
+## GitHub Pages publication verified — 2026-10-15
+
+- Owner changed Settings → Pages from `main/(root)` to `project/medusa-foundation-audit /docs` and saved.
+- GitHub Actions `pages build and deployment` run **38762049492** on branch head `941abdbb43e6e570daa8be81dc746b30b4c79892` completed successfully (dynamic Pages build).
+- Independently fetched all three public pages successfully:
+  - Persian: https://davoodmehraban89.github.io/medusa/
+  - English: https://davoodmehraban89.github.io/medusa/en.html
+  - Arabic: https://davoodmehraban89.github.io/medusa/ar.html
+  All were returned as `Medusa Commerce — Static Preview` with corresponding language content.
+- Source is under `docs/index.html`, `docs/en.html`, `docs/ar.html`, without client JavaScript, external imagery or other asset dependencies; five country selection options render with CSS-only interaction.
+- **Important distinction:** External HTTP fetch and successful publication do not prove the user's own iPhone/network can load `github.io`; user must confirm. Earlier Cloudflare pages.dev/workers.dev previews appeared blank for user while offline HTML worked.
+- `main` remains unchanged, and PR #2 is unmerged. This is an illustrative static design preview, without backend, real product catalog, prices, inventory or payments.
