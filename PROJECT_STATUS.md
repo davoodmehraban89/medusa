@@ -217,3 +217,34 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Source is under `docs/index.html`, `docs/en.html`, `docs/ar.html`, without client JavaScript, external imagery or other asset dependencies; five country selection options render with CSS-only interaction.
 - **Important distinction:** External HTTP fetch and successful publication do not prove the user's own iPhone/network can load `github.io`; user must confirm. Earlier Cloudflare pages.dev/workers.dev previews appeared blank for user while offline HTML worked.
 - `main` remains unchanged, and PR #2 is unmerged. This is an illustrative static design preview, without backend, real product catalog, prices, inventory or payments.
+
+
+## Three-language storefront design completion — 2026-10-15
+
+**Scope:** complete reviewable *visual design and client-side browsing experience* using the already working GitHub Pages platform. This is **not a production store**.
+
+### Changes delivered
+
+- Rebuilt all three independent public HTML pages: `docs/index.html` (Persian RTL), `docs/en.html` (English LTR), `docs/ar.html` (Arabic RTL).
+- A full responsive hero/brand presentation, in-page navigation, native five-market radio selection, 8 sample category cards for Iran and 4 Iran-origin sample categories for each foreign market, details panels, 3 experience principles, a 3-stage product roadmap, 4 FAQs and a candid non-transactional notice. Currency code labels only, no fabricated prices, availability, stock or checkout.
+- Inline SVG category drawings and CSS; **no external assets, client-side JavaScript or API requests** on GitHub Pages. Designed to avoid the earlier all-white screen issue.
+- Added native radio accessibility correction, keyboard focus/reduced motion styling and small-screen breakpoints.
+- Added `commerce/scripts/validate-static-preview.mjs` validating three languages, five market panels, 24 panel-local sample instances, four FAQs, all locale links, mobile CSS, accessibility indicators, no external scripts/assets, and region currency codes. Wired validator into the existing `.github/workflows/commerce-checks.yml` for `docs/**` and `commerce/**` changes.
+- Added comprehensive implementation and design handoff `commerce/STORE_DESIGN.md`, including remaining limitations and production acceptance boundaries.
+
+### Verified checks and deployment
+
+- GitHub Actions `Commerce storefront checks` runs **38764265249** and **38764274155** completed successfully, including React storefront unit tests, TypeScript/Vite build and the new static preview validator.
+- GitHub Pages `pages build and deployment` run **38764265134** completed successfully for head `ce7c81b03`; later documentation-only commits require their own final verification before reporting latest-head deployment.
+- Independent external rendered HTML fetch confirmed redesigned Persian, English and Arabic GitHub Pages each show the full hero, collections, Experience, Roadmap and FAQ sections, 24 sample-card elements across the five panels and 4 FAQs. No request errors in that check.
+- Published review URLs:
+  - Persian: https://davoodmehraban89.github.io/medusa/
+  - English: https://davoodmehraban89.github.io/medusa/en.html
+  - Arabic: https://davoodmehraban89.github.io/medusa/ar.html
+
+### What is still NOT complete
+
+- User has **not yet personally confirmed** the latest redesign renders correctly on the iPhone, only the earlier GitHub Pages sample version.
+- Backend Medusa / Admin, real products, inventory, regional selling eligibility, live prices, cart, authentication, actual order submission, fulfillment and payment remain unconfigured and untested.
+- PR #2 remains unmerged and `main` unchanged. Do not merge or launch commercially without separate approval.
+- These three HTML/CSS files intentionally duplicate presentation rules to remain fully self-contained: refactor into a managed static generator after this visual review stage.
