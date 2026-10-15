@@ -182,3 +182,15 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Worker proxies **only** GET/HEAD for `/`, `/index.html` and the storefront's static `/assets/` filenames to the canonical public Cloudflare Pages site. All other paths return 404 and mutation requests return 405; no customer API, credentials, cookies or checkout are proxied. Public preview is explicitly noindex.
 - Independently rendered and verified this alternate URL with a browser fetch: `Medusa Commerce` loads with 8 sample product cards, 5 country options and 3 language options (the JS frontend was executed). Existing GitHub PR #2 remains Draft and unmerged.
 - **Unverified:** visitor's device and ISP/VPN/DNS availability on `workers.dev`. If this second hostname also does not open, obtain exact browser error/screenshot and test on cellular versus Wi-Fi; consider a fully independent hosting provider/domain after confirmed network evidence. Do not claim the user's connectivity issue is solved until they confirm access.
+
+
+## Emergency no-JavaScript accessibility fallback — 2026-10-15
+
+- User reported that both original React/Cloudflare preview URLs appeared entirely white on their mobile device; root cause on that device is **unverified**.
+- Implemented and deployed an **independent HTML-first, fully server-rendered Worker** under `https://medusa-commerce-access.davoodmehraban89.workers.dev/`; it returns HTML plus inline CSS with no client JS or external font/image/API requests. Source is tracked at `commerce/edge/preview-worker.js`.
+- Worker handles three languages (fa, ar, en) and five markets independently, displays clearly labeled illustrative sample items, and provides server-side market/language navigation, category filters and search. No real prices, stock, orders or payments.
+- An initial deployment invoked a nonexistent handler and returned HTTP 500; this was corrected in commit `1df05187`, redeployed, and subsequently checked successfully from an independent external browser fetch for Persian/IR, English/AE and Arabic/OM content.
+- Also updated `commerce/index.html` on the development branch (commit `a63a3ada`) to ship actual visible static fallback text/cards before React mounts; avoids a blank shell if its JS assets are blocked or fail. This version must still finish and pass Cloudflare Pages deployment.
+- Created a **separate downloadable, self-contained offline HTML preview file** in the active conversation under `/mnt/data/Medusa_Offline_Preview.html`; this is an answer attachment, **not** a versioned repository file or a published service.
+- Confirmed from outside the user's network only; **not yet confirmed to work on their phone**. User feedback is required to determine network-specific reachability, especially if `workers.dev` is also blank.
+- Changes remain in development branch PR #2. Nothing was merged into `main`.
