@@ -1,0 +1,3 @@
+# Commerce is an independent package, not a workspace of the Medusa source monorepo.
+# This marker prevents repository-level Yarn workspace resolution during Cloudflare Pages install.
+# Cloudflare will resolve dependencies for this standalone preview project.
