@@ -92,3 +92,17 @@ The preview must not be represented as an operating store. A public static UI de
 - Until backend credentials are configured, no legitimate add-to-cart, checkout, customer registration, stock verification or payment is available. The preview explicitly signals that fact.
 - Every pull-request change to `commerce/` is checked by GitHub Actions using `npm test` and `npm run build`; Cloudflare Pages builds the development branch for its public static preview without changing `main`.
 - If the site does not open for a visitor, first compare the canonical URL with the latest successful deployment URL in Cloudflare Pages and collect the exact browser error, network (Wi-Fi/mobile data) and country. A successful Cloudflare deployment alone does not guarantee reachability from every network.
+
+
+## White-screen-safe accessible preview
+
+The URL `https://medusa-commerce-access.davoodmehraban89.workers.dev/` is a **separate Cloudflare Worker** deployed from `commerce/edge/preview-worker.js`, independent of Vite and the `pages.dev` JavaScript bundles.
+
+- Returns fully rendered HTML and inline CSS on the first response; **no browser JavaScript, external fonts, image CDN, or API** is needed.
+- Country and language links are ordinary server-rendered HTTP GET navigation and work without JavaScript. Product sample cards are explicitly non-orderable. Search and category filtering are processed per request.
+- A static HTML-only page is the fallback for users whose browser shows blank output on the interactive React preview.
+- The worker returns 404 for unrelated paths and 405 for modifying HTTP methods. Nothing in this path accesses store data, payments, or other secrets.
+- The default client-side React demo remains separately available at `https://medusa-commerce-preview-dm.pages.dev/`.
+- **Limit:** a working outside-network check cannot prove the visitor's phone/carrier can reach `workers.dev`. If it also renders blank, collect the exact Safari/Chrome error, network type and VPN/DNS status; do not blindly assume a frontend-only problem.
+
+The accessible Worker implementation is tracked and versioned in `commerce/edge/preview-worker.js`. After modifying it, update the deployed Worker and independently verify locale/market combinations. Never pretend committing a source file alone automatically redeploys this particular Worker.
