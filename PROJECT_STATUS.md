@@ -194,3 +194,12 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Created a **separate downloadable, self-contained offline HTML preview file** in the active conversation under `/mnt/data/Medusa_Offline_Preview.html`; this is an answer attachment, **not** a versioned repository file or a published service.
 - Confirmed from outside the user's network only; **not yet confirmed to work on their phone**. User feedback is required to determine network-specific reachability, especially if `workers.dev` is also blank.
 - Changes remain in development branch PR #2. Nothing was merged into `main`.
+
+
+## GitHub Pages fallback prepared — 2026-10-15
+
+- The user showed GitHub Settings → Pages configured as **Deploy from a branch / main / (root)**. This does **not** publish the development storefront in `commerce/`.
+- Added pure HTML/CSS static site files under `docs/index.html`, `docs/en.html`, `docs/ar.html` on `project/medusa-foundation-audit`. All three include market selection for IR, AE, OM, IQ, QA via native radio controls and 3 locale links. No JS, external fonts/images, API keys, prices, payment or live inventory. Designed as a public non-transactional visual preview.
+- Independently inspected all three repository HTML files: expected `lang` and `dir`, five radio inputs, three locale links, 24 sample-card instances across all five market panels, **zero external asset elements**.
+- **Deployment NOT YET VERIFIED:** The user must change GitHub Settings → Pages → Build and deployment → Source: `Deploy from a branch`; Branch: `project/medusa-foundation-audit`; Folder: `/docs`; press Save. This changes site publishing source only and leaves `main` unmerged. The expected URL after GitHub Pages has finished is `https://davoodmehraban89.github.io/medusa/` but this URL MUST be verified after the user updates settings; do not claim it is live now.
+- Vercel account SMS verification is unavailable for the user's +98 country code. Cloudflare Pages and Workers rendered successfully from external networks but appeared blank to the user on iPhone; the previously supplied offline HTML works. GitHub Pages is being used as a distinct delivery domain for troubleshooting, not yet proven reachable on user's network.
