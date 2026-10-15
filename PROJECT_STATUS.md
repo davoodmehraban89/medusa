@@ -172,3 +172,13 @@ Record date, commit/PR, objective, tests run with results, unresolved blockers, 
 - Independent JavaScript-rendered fetch on the canonical URL confirmed 8 sample category cards, 5 country options, 3 language options and explicit preview-only notice.
 - Network-specific availability on the user's phone is NOT validated. If site still fails on that network, collect screenshot/error and test Wi-Fi vs cellular and VPN/DNS; do not infer ISP-specific causes without evidence.
 - PR #2 is still unmerged. No configured production backend, real SKUs, customer accounts, payment or actual orders. This is strictly a UI demonstration.
+
+## Alternate preview hostname after visitor access failure — 2026-10-15
+
+- Visitor still reported the Cloudflare Pages preview was inaccessible on their device despite previously confirmed external rendering.
+- Cloudflare Pages project `medusa-commerce-preview-dm` still reports canonical deployment `7041e365-fdd4-4ab8-aec3-c43a11e94662` status `success` and serves the site from independent JavaScript-capable fetches. This does not establish accessibility on visitor's carrier or DNS.
+- As a reversible, read-only alternate route, deployed Cloudflare Worker `medusa-commerce-access` under the authorized account's existing `davoodmehraban89.workers.dev` subdomain:
+  https://medusa-commerce-access.davoodmehraban89.workers.dev/
+- Worker proxies **only** GET/HEAD for `/`, `/index.html` and the storefront's static `/assets/` filenames to the canonical public Cloudflare Pages site. All other paths return 404 and mutation requests return 405; no customer API, credentials, cookies or checkout are proxied. Public preview is explicitly noindex.
+- Independently rendered and verified this alternate URL with a browser fetch: `Medusa Commerce` loads with 8 sample product cards, 5 country options and 3 language options (the JS frontend was executed). Existing GitHub PR #2 remains Draft and unmerged.
+- **Unverified:** visitor's device and ISP/VPN/DNS availability on `workers.dev`. If this second hostname also does not open, obtain exact browser error/screenshot and test on cellular versus Wi-Fi; consider a fully independent hosting provider/domain after confirmed network evidence. Do not claim the user's connectivity issue is solved until they confirm access.
