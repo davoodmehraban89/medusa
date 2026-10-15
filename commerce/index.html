@@ -1,1 +1,59 @@
-<!doctype html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Medusa Commerce</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#184839" />
+  <meta name="description" content="Medusa Commerce — development and design preview, not a live store." />
+  <title>Medusa Commerce | Preview</title>
+  <style>
+    /* Always-visible HTML fallback until React mounts; this also protects
+       against a white screen if an external JS module fails to load. */
+    #root .safe-preview { font-family:Tahoma,Arial,sans-serif;background:#f5f3ec;color:#183629;min-height:100vh; }
+    #root .safe-banner { background:#194c3b;color:#fff;padding:14px 22px;text-align:center;font-size:12px; }
+    #root .safe-hero { padding:clamp(48px,8vw,90px) 24px;background:linear-gradient(130deg,#e4eadc,#faf5e9); }
+    #root .safe-wrap { max-width:1100px;margin:auto; }
+    #root .safe-brand { font-size:19px;font-weight:900;direction:ltr;text-align:left;letter-spacing:-.5px; }
+    #root .safe-brand small { font-size:10px;display:block;letter-spacing:2px; }
+    #root .safe-hero h1 { font-size:clamp(32px,6vw,60px);line-height:1.35;margin:35px 0 15px; }
+    #root .safe-hero h1 span { color:#377960; }
+    #root .safe-hero p { font-size:14px;line-height:2;color:#597363; }
+    #root .safe-content { padding:34px 24px 60px; }
+    #root .safe-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:900px;margin:22px auto; }
+    #root .safe-card { padding:22px 16px;border:1px solid #e0e8db;background:white;border-radius:12px;font-size:15px;font-weight:bold; }
+    #root .safe-card small { display:block;color:#759282;font-size:11px;font-weight:400;margin-top:11px; }
+    #root .safe-action { display:inline-block;padding:14px 22px;background:#1c5540;color:white;border-radius:10px;font-size:13px;text-decoration:none;margin-top:17px; }
+    #root .safe-notice { font-size:12px;color:#637768;line-height:1.9; }
+    @media(min-width:800px){#root .safe-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+  </style>
+</head>
+<body style="margin:0">
+  <div id="root">
+    <div class="safe-preview">
+      <div class="safe-banner">MEDUSA COMMERCE · پیش‌نمایش طراحی · بدون خرید و پرداخت واقعی</div>
+      <main>
+        <div class="safe-hero">
+          <div class="safe-wrap">
+            <div class="safe-brand">MEDUSA<small>COMMERCE</small></div>
+            <h1>فروشگاه شما،<br><span>در یک نگاه متفاوت</span></h1>
+            <p>نسخه اولیه رابط فروشگاه برای پنج بازار ایران، امارات، عمان، عراق و قطر.<br>فارسی، العربية، English — طراحی مستقل برای سه زبان.</p>
+            <a class="safe-action" href="https://medusa-commerce-access.davoodmehraban89.workers.dev/">بازکردن نسخه سبک بدون جاوااسکریپت</a>
+          </div>
+        </div>
+        <div class="safe-content safe-wrap">
+          <h2>مجموعه‌های نمونه</h2>
+          <p class="safe-notice">این‌ها فقط نمونه طراحی‌اند؛ قیمت، موجودی و امکان سفارش ندارند.</p>
+          <div class="safe-grid">
+            <div class="safe-card">موبایل و دیجیتال<small>نمونه دسته‌بندی</small></div>
+            <div class="safe-card">رایانه و تجهیزات<small>نمونه دسته‌بندی</small></div>
+            <div class="safe-card">سفال و صنایع دستی<small>نمونه دسته‌بندی</small></div>
+            <div class="safe-card">زعفران و محصولات ایرانی<small>نمونه دسته‌بندی</small></div>
+          </div>
+          <p class="safe-notice">اگر این بخش را می‌بینید اما نسخه تعاملی باز نمی‌شود، احتمالاً یک فایل اجرایی مرورگر بارگیری نشده است.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
